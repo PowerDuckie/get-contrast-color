@@ -55,7 +55,6 @@ console.log(getContrastColor('linear-gradient(to right, rgba(255,0,0,0.5), hsla(
 **Notes:**
 
 * For gradients, the average luminance of all color stops is used to determine contrast.
-* The library tries to use [`font-color-contrast`](https://www.npmjs.com/package/font-color-contrast) first for simplicity, then falls back to WCAG-based luminance calculation.
 * Fully production-ready for dynamic backgrounds in UI applications.
 
 ---
