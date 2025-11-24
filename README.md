@@ -4,6 +4,9 @@ A **production-ready JavaScript library** to get readable contrast text color (`
 
 Useful for generating cards, UI elements, or any dynamic backgrounds where text contrast is important, following **WCAG guidelines**.
 
+<img width="222" height="1748" alt="image" src="https://github.com/user-attachments/assets/7884b4b9-8dcd-4f08-83bc-61ab0cbfa626" />
+
+
 ---
 
 ## Installation
