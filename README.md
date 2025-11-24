@@ -10,6 +10,8 @@ Supports:
 
 Meets WCAG contrast guidelines for accessibility.
 
+<img width="222" height="1748" alt="image" src="https://github.com/user-attachments/assets/b6b199b9-7ceb-46d9-9a5d-68da5e175eb4" />
+
 
 
 ## 📦 Installation
@@ -168,14 +170,3 @@ return (
 ## 🔑 License
 
 MIT
-Copyright ©
-
-
-
-### If you want, I can also:
-
-✔ Auto-generate `generateGradient()` docs
-✔ Add `pnpm` install command
-✔ Provide test suite
-✔ Publish your npm package for you
-✔ Improve performance by caching parsed luminance
