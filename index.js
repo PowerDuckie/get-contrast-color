@@ -1,6 +1,3 @@
-const { toLower } = require('lodash');
-const fontColorContrast = require('font-color-contrast');
-
 /**
  * Compute relative luminance based on WCAG formula
  * Reference: https://www.w3.org/TR/WCAG20-TECHS/G17.html
@@ -131,13 +128,7 @@ function parseGradient(gradient) {
  * @returns {"#000000"|"#ffffff"}
  */
 function getContrastColor(color) {
-    // 1. Try font-color-contrast first
-    try {
-        const result = toLower(fontColorContrast(color));
-        if (result === '#000000' || result === '#ffffff') return result;
-    } catch (e) { }
-
-    // 2. Gradient
+    // 1. Gradient
     if (/gradient/i.test(color)) {
         const rgbs = parseGradient(color);
         if (!rgbs.length) return '#000000';
@@ -145,7 +136,7 @@ function getContrastColor(color) {
         return avgLum < 0.5 ? '#ffffff' : '#000000';
     }
 
-    // 3. Solid color fallback
+    // 2. Solid color fallback
     const rgb = parseColor(color);
     if (!rgb) return '#000000';
     const [r, g, b] = rgb;

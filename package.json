@@ -1,6 +1,6 @@
 {
   "name": "get-contrast-color",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A production-ready TypeScript utility to determine readable text color (black or white) based on any background.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -23,18 +23,11 @@
     "build-publish": "npm version patch && rollup -c rollup.config.js && npm publish"
   },
   "license": "MIT",
-  "dependencies": {
-    "font-color-contrast": "^11.1.0",
-    "lodash": "^4.17.21"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.9",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "@types/lodash": "^4.17.21",
-    "rollup": "^4.44.1",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "rollup": "^4.44.1"
   }
 }
