@@ -1,27 +1,48 @@
 {
   "name": "get-contrast-color",
   "version": "2.0.5",
-  "description": "A production-ready TypeScript utility to determine readable text color (black or white) based on any background.",
+  "description": "A production-ready utility to determine readable text color (black or white) based on any background including gradients.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
+  "types": "types.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
       "require": "./dist/index.cjs.js",
-      "browser": "./dist/index.umd.js"
+      "browser": "./dist/index.umd.js",
+      "types": "./types.d.ts"
     }
   },
+  "sideEffects": false,
   "files": [
     "dist",
     "types.d.ts",
     "README.md"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
     "build": "rollup -c rollup.config.js",
-    "build-publish": "npm version patch && rollup -c rollup.config.js && npm publish"
+    "build:publish": "npm version patch && npm run clean && npm run build && npm publish"
   },
+  "keywords": [
+    "contrast",
+    "accessibility",
+    "color",
+    "wcag",
+    "gradient",
+    "utilities",
+    "readable text",
+    "design system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PowerDuckie/get-contrast-color.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PowerDuckie/get-contrast-color/issues"
+  },
+  "homepage": "https://github.com/PowerDuckie/get-contrast-color#readme",
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21"
