@@ -1,6 +1,6 @@
 {
   "name": "get-contrast-color",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "A production-ready TypeScript utility to determine readable text color (black or white) based on any background.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
