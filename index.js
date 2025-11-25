@@ -13,26 +13,14 @@ function relativeLuminance(r, g, b) {
     const GsRGB = g / 255;
     const BsRGB = b / 255;
 
-    const R = RsRGB <= 0.03928
-        ? RsRGB / 12.92
-        : Math.pow((RsRGB + 0.055) / 1.055, 2.4);
-
-    const G = GsRGB <= 0.03928
-        ? GsRGB / 12.92
-        : Math.pow((GsRGB + 0.055) / 1.055, 2.4);
-
-    const B = BsRGB <= 0.03928
-        ? BsRGB / 12.92
-        : Math.pow((BsRGB + 0.055) / 1.055, 2.4);
+    const R = RsRGB <= 0.03928 ? RsRGB / 12.92 : Math.pow((RsRGB + 0.055) / 1.055, 2.4);
+    const G = GsRGB <= 0.03928 ? GsRGB / 12.92 : Math.pow((GsRGB + 0.055) / 1.055, 2.4);
+    const B = BsRGB <= 0.03928 ? BsRGB / 12.92 : Math.pow((BsRGB + 0.055) / 1.055, 2.4);
 
     return 0.2126 * R + 0.7152 * G + 0.0722 * B;
 }
 
-/**
- * Parse hex color (#rgb or #rrggbb) to [r,g,b]
- * @param {string} color
- * @returns {[number,number,number]|null}
- */
+/** Parse hex color (#rgb or #rrggbb) to [r,g,b] */
 function parseHex(color) {
     if (typeof color !== 'string') return null;
     let hex = color.replace(/^#/, '');
@@ -42,11 +30,7 @@ function parseHex(color) {
     return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
 }
 
-/**
- * Parse rgb(...) or rgba(...) to [r,g,b,a]
- * @param {string} color
- * @returns {[number,number,number,number]|null}
- */
+/** Parse rgb(...) or rgba(...) to [r,g,b,a] */
 function parseRgb(color) {
     if (typeof color !== 'string') return null;
     const m = color.match(/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(\d*\.?\d+))?\s*\)/i);
@@ -58,11 +42,7 @@ function parseRgb(color) {
     return [r, g, b, a];
 }
 
-/**
- * Parse hsl(...) or hsla(...) to [r,g,b,a]
- * @param {string} color
- * @returns {[number,number,number,number]|null}
- */
+/** Parse hsl(...) or hsla(...) to [r,g,b,a] */
 function parseHsl(color) {
     if (typeof color !== 'string') return null;
     const m = color.match(/hsla?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d*\.?\d+))?\s*\)/i);
@@ -98,19 +78,11 @@ function parseHsl(color) {
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255), a];
 }
 
-/**
- * Generic parse color to [r,g,b,a?]
- * supports: hex, rgb(a), hsl(a)
- * @param {string} color
- * @returns {array|null}
- */
+/** Generic parse color to [r,g,b,a?] */
 function parseColor(color) {
     if (!color || typeof color !== 'string') return null;
     const s = color.trim();
-    if (s.startsWith('#')) {
-        const hex = parseHex(s);
-        return hex ? hex : null;
-    }
+    if (s.startsWith('#')) return parseHex(s);
     if (/^rgba?\(/i.test(s)) return parseRgb(s);
     if (/^hsla?\(/i.test(s)) return parseHsl(s);
     return null;
@@ -121,17 +93,16 @@ function generateGradient(colorItem) {
     if (!colorItem || !Array.isArray(colorItem.colors) || colorItem.colors.length === 0) return null;
     const { type, colors, gradientAngle = '180deg', gradientPositions } = colorItem;
     if (String(type) === 'solid') return String(colors[0]);
-    const stops = colors.map((c, i) => {
-        const pos = Array.isArray(gradientPositions) ? gradientPositions[i] : undefined;
-        return pos ? `${c} ${pos}` : c;
-    }).join(', ');
+    const stops = colors
+        .map((c, i) => {
+            const pos = Array.isArray(gradientPositions) ? gradientPositions[i] : undefined;
+            return pos ? `${c} ${pos}` : c;
+        })
+        .join(', ');
     return `linear-gradient(${gradientAngle}, ${stops})`;
 }
 
-/**
- * Parse linear-gradient string into array of color/stop tokens (handles nested functions)
- * returns array of stop strings (angle may be included as first item)
- */
+/** Split gradient arguments */
 function splitGradientArgs(gradient) {
     if (typeof gradient !== 'string') return [];
     const start = gradient.indexOf('(');
@@ -156,26 +127,18 @@ function splitGradientArgs(gradient) {
     return parts;
 }
 
-/**
- * Extract the first color token from a stop string.
- * e.g. "#fff 50%" => "#fff"
- * e.g. "rgba(1,2,3,0.5) 20%" => "rgba(1,2,3,0.5)"
- */
+/** Extract first color token from stop string */
 function extractColorToken(stop) {
     if (!stop || typeof stop !== 'string') return null;
     const m = stop.match(/(#[0-9a-fA-F]{3,6}|rgba?\([^)]+\)|hsla?\([^)]+\))/i);
     return m ? m[0] : null;
 }
 
-/**
- * Parse a linear-gradient string and return an array of parsed rgb(a) arrays.
- * Only color tokens are parsed; invalid tokens are skipped.
- */
+/** Parse linear-gradient string into RGB arrays */
 function parseGradient(gradient) {
     if (typeof gradient !== 'string' || !/gradient/i.test(gradient)) return [];
     const args = splitGradientArgs(gradient);
     if (!args.length) return [];
-    // if first arg is angle/direction, remove it
     const firstArg = args[0];
     const hasAngle = /deg|rad|turn|to\s+/i.test(firstArg);
     const stops = hasAngle ? args.slice(1) : args;
@@ -189,12 +152,8 @@ function parseGradient(gradient) {
     return parsed;
 }
 
-/**
- * Determine readable font color for given input.
- * Always returns an object: { format: ColorItemLike, color: string }.
- */
+/** Determine readable contrast color */
 function getContrastColor(color) {
-    // If input is a ColorItem object with type 'contrast', return reversed-gradient format
     if (isObject(color)) {
         if (String(color.type) === 'contrast') {
             const reversedColors = Array.isArray(color.colors) ? [...color.colors].reverse() : [];
@@ -210,34 +169,24 @@ function getContrastColor(color) {
                 color: generateGradient(format)
             };
         }
-
-        // otherwise convert object to gradient string for downstream handling
         color = generateGradient(color);
     }
 
-    // default fallback
     let chosen = '#000000';
 
-    if (typeof color !== 'string') {
-        // keep fallback '#000000' if color is not a string
-        chosen = '#000000';
-    } else {
-        // Gradient case
+    if (typeof color === 'string') {
         if (/gradient/i.test(color)) {
             const rgbs = parseGradient(color);
-            if (!rgbs.length) {
-                // parsing failed -> fallback to black
-                chosen = '#000000';
-            } else {
-                const avgLum = rgbs.reduce((sum, triplet) => sum + relativeLuminance(triplet[0], triplet[1], triplet[2]), 0) / rgbs.length;
+            if (!rgbs.length) chosen = '#000000';
+            else {
+                const avgLum =
+                    rgbs.reduce((sum, triplet) => sum + relativeLuminance(triplet[0], triplet[1], triplet[2]), 0) / rgbs.length;
                 chosen = avgLum < 0.5 ? '#ffffff' : '#000000';
             }
         } else {
-            // Solid color
             const rgb = parseColor(color);
-            if (!rgb) {
-                chosen = '#000000';
-            } else {
+            if (!rgb) chosen = '#000000';
+            else {
                 const [r, g, b] = rgb;
                 chosen = relativeLuminance(r, g, b) < 0.5 ? '#ffffff' : '#000000';
             }
@@ -262,11 +211,14 @@ function getContrastColor(color) {
     };
 }
 
-module.exports = {
+// Export both named + default for compatibility
+const api = {
     getContrastColor,
     generateGradient,
-    // export helpers for testing/debugging if you like
-    relativeLuminance,
     parseColor,
-    parseGradient
+    parseGradient,
+    relativeLuminance
 };
+
+module.exports = api; // named exports
+module.exports.default = getContrastColor; // default export
