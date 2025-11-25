@@ -8,7 +8,7 @@ const { isObject } = require('lodash');
  * @param {number} b Blue (0-255)
  * @returns {number} luminance (0-1)
  */
-function relativeLuminance(r, g, b) {
+export const relativeLuminance = (r, g, b) => {
     const RsRGB = r / 255;
     const GsRGB = g / 255;
     const BsRGB = b / 255;
@@ -21,7 +21,7 @@ function relativeLuminance(r, g, b) {
 }
 
 /** Parse hex color (#rgb or #rrggbb) to [r,g,b] */
-function parseHex(color) {
+export const parseHex = (color) => {
     if (typeof color !== 'string') return null;
     let hex = color.replace(/^#/, '');
     if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
@@ -31,7 +31,7 @@ function parseHex(color) {
 }
 
 /** Parse rgb(...) or rgba(...) to [r,g,b,a] */
-function parseRgb(color) {
+export const parseRgb = (color) => {
     if (typeof color !== 'string') return null;
     const m = color.match(/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(\d*\.?\d+))?\s*\)/i);
     if (!m) return null;
@@ -43,7 +43,7 @@ function parseRgb(color) {
 }
 
 /** Parse hsl(...) or hsla(...) to [r,g,b,a] */
-function parseHsl(color) {
+export const parseHsl = (color) => {
     if (typeof color !== 'string') return null;
     const m = color.match(/hsla?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*(\d*\.?\d+))?\s*\)/i);
     if (!m) return null;
@@ -79,7 +79,7 @@ function parseHsl(color) {
 }
 
 /** Generic parse color to [r,g,b,a?] */
-function parseColor(color) {
+export const parseColor = (color) => {
     if (!color || typeof color !== 'string') return null;
     const s = color.trim();
     if (s.startsWith('#')) return parseHex(s);
@@ -89,7 +89,7 @@ function parseColor(color) {
 }
 
 /** Generate linear-gradient string from ColorItem */
-function generateGradient(colorItem) {
+export const generateGradient = (colorItem) => {
     if (!colorItem || !Array.isArray(colorItem.colors) || colorItem.colors.length === 0) return null;
     const { type, colors, gradientAngle = '180deg', gradientPositions } = colorItem;
     if (String(type) === 'solid') return String(colors[0]);
@@ -103,7 +103,7 @@ function generateGradient(colorItem) {
 }
 
 /** Split gradient arguments */
-function splitGradientArgs(gradient) {
+export const splitGradientArgs = (gradient) => {
     if (typeof gradient !== 'string') return [];
     const start = gradient.indexOf('(');
     const end = gradient.lastIndexOf(')');
@@ -128,14 +128,14 @@ function splitGradientArgs(gradient) {
 }
 
 /** Extract first color token from stop string */
-function extractColorToken(stop) {
+export const extractColorToken = (stop) => {
     if (!stop || typeof stop !== 'string') return null;
     const m = stop.match(/(#[0-9a-fA-F]{3,6}|rgba?\([^)]+\)|hsla?\([^)]+\))/i);
     return m ? m[0] : null;
 }
 
 /** Parse linear-gradient string into RGB arrays */
-function parseGradient(gradient) {
+export const parseGradient = (gradient) => {
     if (typeof gradient !== 'string' || !/gradient/i.test(gradient)) return [];
     const args = splitGradientArgs(gradient);
     if (!args.length) return [];
@@ -153,7 +153,7 @@ function parseGradient(gradient) {
 }
 
 /** Determine readable contrast color */
-function getContrastColor(color) {
+export const getContrastColor = (color) => {
     if (isObject(color)) {
         if (String(color.type) === 'contrast') {
             const reversedColors = Array.isArray(color.colors) ? [...color.colors].reverse() : [];
@@ -210,15 +210,3 @@ function getContrastColor(color) {
         color: chosen
     };
 }
-
-// Export both named + default for compatibility
-const api = {
-    getContrastColor,
-    generateGradient,
-    parseColor,
-    parseGradient,
-    relativeLuminance
-};
-
-module.exports = api; // named exports
-module.exports.default = getContrastColor; // default export
