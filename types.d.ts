@@ -127,3 +127,8 @@ export function extractColorToken(stop: string): string | null;
  * Example: reverseGradientStops('linear-gradient(135deg, #a 50%, #b 50%)') -> 'linear-gradient(135deg, #b 50%, #a 50%)'
  */
 export function reverseGradientStops(gradient: string): string;
+
+
+// types.d.ts
+export default function getContrastColor(input: string | ColorItem): ContrastResult;
+

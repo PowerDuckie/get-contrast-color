@@ -16,3 +16,4 @@ console.log(getContrastColor('hsl(120, 100%, 50%)')); // -> "#000000"
 // Linear gradient examples
 console.log(getContrastColor('linear-gradient(135deg, #2563EB 0%, #9C27B0 100%)')); // -> "#ffffff"
 console.log(getContrastColor('linear-gradient(to right, rgba(255,0,0,0.5), hsla(240,100%,50%,0.5))')); // -> "#ffffff"
+console.log(getContrastColor('linear-gradient(45deg, rgb(153, 130, 117) 0%, rgb(153, 64, 1) 100%)'));
