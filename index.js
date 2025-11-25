@@ -25,6 +25,7 @@ export const parseHex = (color) => {
     if (typeof color !== 'string') return null;
     let hex = color.replace(/^#/, '');
     if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+    if (hex.length === 8) hex = hex.slice(0, 6);
     if (hex.length !== 6) return null;
     const num = parseInt(hex, 16);
     return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
