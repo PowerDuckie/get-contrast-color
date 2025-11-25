@@ -1,4 +1,5 @@
-const { getContrastColor } = require('./index');
+import { getContrastColor } from './dist/index.cjs.js';
+
 
 console.log(getContrastColor('#0000ff')); // -> "#ffffff"
 console.log(getContrastColor('rgb(240,240,240)')); // -> "#000000"

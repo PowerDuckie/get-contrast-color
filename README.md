@@ -32,7 +32,7 @@ yarn add get-contrast-color
 ### Node.js / CommonJS
 
 ```js
-const { getContrastColor } = require('get-contrast-color');
+import {getContrastColor} from 'get-contrast-color';;
 
 console.log(getContrastColor('#ff0000').color); // "#ffffff"
 console.log(getContrastColor('rgb(240,240,240)').color); // "#000000"
