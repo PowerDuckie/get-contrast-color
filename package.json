@@ -1,6 +1,6 @@
 {
   "name": "get-contrast-color",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "A production-ready utility to determine readable text color (black or white) based on any background including gradients.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
